@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nexus AI — Build intelligent workflows without limits. The AI-powered productivity platform trusted by 12,000+ teams worldwide.">
+    <meta name="theme-color" content="#0F0A07">
+    <title>Nexus AI — Build Intelligent Workflows. Without Limits.</title>
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Google Fonts: Inter (headings) + Open Sans (body) — Max 2 families, 3 weights -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons (modern, lightweight) -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         CUSTOM CURSOR — Signature identity element
+         Visible only on pointer: fine devices (no mobile)
+    ====================================================== -->
+    <div class="cursor" id="cursor" aria-hidden="true">
+        <div class="cursor__dot"></div>
+        <div class="cursor__ring"></div>
+    </div>
+
+    <!-- SCROLL PROGRESS BAR -->
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+
+    <!-- =====================================================
+         HEADER / NAVIGATION
+         Sticky, blur-glass navbar inspired by Raycast + Linear
+    ====================================================== -->
+    <header class="header" id="header" role="banner">
+        <nav class="nav container" aria-label="Main navigation">
+
+            <!-- Logo -->
+            <a href="#" class="nav__logo" aria-label="Nexus AI — Go to homepage">
+                <svg class="nav__logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
+                    <path d="M16 2L30 9V23L16 30L2 23V9L16 2Z" fill="var(--color-mocha)" opacity="0.9"/>
+                    <path d="M16 9L23 12.5V19.5L16 23L9 19.5V12.5L16 9Z" fill="var(--color-blue)" opacity="0.85"/>
+                    <circle cx="16" cy="16" r="3" fill="var(--color-bg)"/>
+                </svg>
+                <span class="nav__logo-text">Nexus <span class="nav__logo-accent">AI</span></span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <ul class="nav__links" id="nav-links" role="list">
+                <li><a href="#features"    class="nav__link">Features</a></li>
+                <li><a href="#how-it-works" class="nav__link">How It Works</a></li>
+                <li><a href="#pricing"     class="nav__link">Pricing</a></li>
+                <li><a href="#faq"         class="nav__link">FAQ</a></li>
+            </ul>
+
+            <!-- Desktop Actions -->
+            <div class="nav__actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark and light mode" title="Toggle theme">
+                    <i data-lucide="sun"  class="icon-sun"  aria-hidden="true"></i>
+                    <i data-lucide="moon" class="icon-moon" aria-hidden="true"></i>
+                </button>
+                <a href="#" class="btn btn--ghost btn--sm">Log in</a>
+                <a href="#" class="btn btn--primary btn--sm">Get Started</a>
+            </div>
+
+            <!-- Mobile Hamburger -->
+            <button
+                class="nav__hamburger"
+                id="hamburger"
+                aria-label="Toggle navigation menu"
+                aria-expanded="false"
+                aria-controls="mobile-menu"
+            >
+                <span class="hamburger__bar"></span>
+                <span class="hamburger__bar"></span>
+                <span class="hamburger__bar"></span>
+            </button>
+        </nav>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobile-menu" aria-hidden="true" role="navigation" aria-label="Mobile navigation">
+            <ul class="mobile-menu__links" role="list">
+                <li><a href="#features"     class="mobile-menu__link">Features</a></li>
+                <li><a href="#how-it-works" class="mobile-menu__link">How It Works</a></li>
+                <li><a href="#pricing"      class="mobile-menu__link">Pricing</a></li>
+                <li><a href="#faq"          class="mobile-menu__link">FAQ</a></li>
+            </ul>
+            <div class="mobile-menu__actions">
+                <a href="#" class="btn btn--ghost btn--full">Log in</a>
+                <a href="#" class="btn btn--primary btn--full">Get Started</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+    <main id="main-content">
+
+        <!-- =====================================================
+             HERO SECTION
+             Inspired by: Linear (typography), Stripe (layout depth),
+             Framer (responsive polish), Luma (warmth)
+        ====================================================== -->
+        <section class="hero" id="hero" aria-labelledby="hero-title">
+
+            <!-- Ambient background gradients + particle canvas (CSS art, no images) -->
+            <div class="hero__bg" aria-hidden="true">
+                <canvas class="hero__canvas" id="hero-canvas"></canvas>
+                <div class="hero__orb hero__orb--1"></div>
+                <div class="hero__orb hero__orb--2"></div>
+                <div class="hero__orb hero__orb--3"></div>
+                <div class="hero__grid"></div>
+            </div>
+
+            <div class="container">
+                <div class="hero__inner">
+
+                    <!-- Content Side -->
+                    <div class="hero__content">
+
+                        <!-- Announcement badge (like Linear) -->
+                        <a href="#" class="hero__badge" data-animate="fade-up" aria-label="What's new in Nexus AI 2.0">
+                            <span class="badge__pulse" aria-hidden="true"></span>
+                            Introducing Nexus AI 2.0 — Now with Voice Workflows
+                            <i data-lucide="arrow-right" class="badge__arrow" aria-hidden="true"></i>
+                        </a>
+
+                        <!-- Main Headline -->
+                        <h1 class="hero__title" id="hero-title" data-animate="fade-up">
+                            Build Intelligent<br>
+                            <span class="text-gradient">Workflows.</span><br>
+                            Without Limits.
+                        </h1>
+
+                        <!-- Subtitle -->
+                        <p class="hero__subtitle" data-animate="fade-up">
+                            Nexus AI transforms how teams collaborate, automate, and deliver.
+                            Connect your tools, train your models, and ship 3× faster — all in one place.
+                        </p>
+
+                        <!-- CTA Buttons -->
+                        <div class="hero__ctas" data-animate="fade-up">
+                            <a href="#" class="btn btn--primary btn--lg">
+                                Start for free
+                                <i data-lucide="arrow-right" aria-hidden="true"></i>
+                            </a>
+                            <a href="#" class="btn btn--ghost btn--lg">
+                                <i data-lucide="play-circle" aria-hidden="true"></i>
+                                Watch demo
+                            </a>
+                        </div>
+
+                        <!-- Social proof -->
+                        <div class="hero__proof" data-animate="fade-up" aria-label="12,000 teams trust Nexus AI">
+                            <div class="proof__avatars" aria-hidden="true">
+                                <div class="proof__avatar" style="--avatar-bg: #C4956A;"></div>
+                                <div class="proof__avatar" style="--avatar-bg: #A0D4E0;"></div>
+                                <div class="proof__avatar" style="--avatar-bg: #A5856F;"></div>
+                                <div class="proof__avatar" style="--avatar-bg: #7BA8B5;"></div>
+                            </div>
+                            <p class="proof__text">
+                                <strong>12,000+</strong> teams trust Nexus AI
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Mockup (pure CSS, no images) — wrapped for float animation -->
+                    <div class="hero__mockup" data-animate="fade-left" aria-hidden="true" role="presentation">
+                        <div class="hero__mockup-inner">
+                        <div class="mockup__window">
+                            <!-- Browser chrome -->
+                            <div class="mockup__chrome">
+                                <div class="mockup__dots">
+                                    <span class="mockup__dot mockup__dot--red"></span>
+                                    <span class="mockup__dot mockup__dot--yellow"></span>
+                                    <span class="mockup__dot mockup__dot--green"></span>
+                                </div>
+                                <div class="mockup__url"></div>
+                                <div class="mockup__actions-bar"></div>
+                            </div>
+                            <!-- App body -->
+                            <div class="mockup__app">
+                                <!-- Sidebar -->
+                                <aside class="mockup__sidebar">
+                                    <div class="mockup__sidebar-logo"></div>
+                                    <div class="mockup__nav-item mockup__nav-item--active">
+                                        <div class="mockup__nav-icon"></div>
+                                        <div class="mockup__nav-label"></div>
+                                    </div>
+                                    <div class="mockup__nav-item">
+                                        <div class="mockup__nav-icon"></div>
+                                        <div class="mockup__nav-label mockup__nav-label--short"></div>
+                                    </div>
+                                    <div class="mockup__nav-item">
+                                        <div class="mockup__nav-icon"></div>
+                                        <div class="mockup__nav-label"></div>
+                                    </div>
+                                    <div class="mockup__nav-item">
+                                        <div class="mockup__nav-icon"></div>
+                                        <div class="mockup__nav-label mockup__nav-label--short"></div>
+                                    </div>
+                                </aside>
+                                <!-- Main content area -->
+                                <div class="mockup__main">
+                                    <!-- Top bar -->
+                                    <div class="mockup__topbar">
+                                        <div class="mockup__topbar-title"></div>
+                                        <div class="mockup__topbar-btn"></div>
+                                    </div>
+                                    <!-- Stat cards -->
+                                    <div class="mockup__stats">
+                                        <div class="mockup__stat">
+                                            <div class="mockup__stat-val" style="--w: 55%"></div>
+                                            <div class="mockup__stat-lbl"></div>
+                                        </div>
+                                        <div class="mockup__stat">
+                                            <div class="mockup__stat-val" style="--w: 70%"></div>
+                                            <div class="mockup__stat-lbl"></div>
+                                        </div>
+                                        <div class="mockup__stat">
+                                            <div class="mockup__stat-val" style="--w: 40%"></div>
+                                            <div class="mockup__stat-lbl"></div>
+                                        </div>
+                                    </div>
+                                    <!-- Chart bars -->
+                                    <div class="mockup__chart">
+                                        <div class="mockup__chart-bar" style="--bar-h: 55%; --bar-delay: 0s;"></div>
+                                        <div class="mockup__chart-bar" style="--bar-h: 80%; --bar-delay: 0.1s;"></div>
+                                        <div class="mockup__chart-bar" style="--bar-h: 45%; --bar-delay: 0.2s;"></div>
+                                        <div class="mockup__chart-bar" style="--bar-h: 92%; --bar-delay: 0.3s;"></div>
+                                        <div class="mockup__chart-bar" style="--bar-h: 68%; --bar-delay: 0.4s;"></div>
+                                        <div class="mockup__chart-bar" style="--bar-h: 75%; --bar-delay: 0.5s;"></div>
+                                        <div class="mockup__chart-bar" style="--bar-h: 88%; --bar-delay: 0.6s;"></div>
+                                    </div>
+                                    <!-- Table rows -->
+                                    <div class="mockup__table">
+                                        <div class="mockup__table-row">
+                                            <div class="mockup__table-cell mockup__table-cell--avatar"></div>
+                                            <div class="mockup__table-cell mockup__table-cell--text"></div>
+                                            <div class="mockup__table-cell mockup__table-cell--tag"></div>
+                                        </div>
+                                        <div class="mockup__table-row">
+                                            <div class="mockup__table-cell mockup__table-cell--avatar"></div>
+                                            <div class="mockup__table-cell mockup__table-cell--text" style="width: 55%"></div>
+                                            <div class="mockup__table-cell mockup__table-cell--tag"></div>
+                                        </div>
+                                        <div class="mockup__table-row">
+                                            <div class="mockup__table-cell mockup__table-cell--avatar"></div>
+                                            <div class="mockup__table-cell mockup__table-cell--text" style="width: 70%"></div>
+                                            <div class="mockup__table-cell mockup__table-cell--tag"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div><!-- /.hero__mockup-inner -->
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             TRUSTED BY — Logo marquee strip
+             Inspired by: Stripe, Notion, Shopify
+        ====================================================== -->
+        <section class="trusted" aria-label="Trusted by companies">
+            <div class="container">
+                <p class="trusted__label">Trusted by innovative teams at</p>
+            </div>
+            <!-- Infinite scroll marquee — pure CSS animation -->
+            <div class="trusted__marquee" aria-hidden="true">
+                <div class="marquee__track">
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">VRS</span>Veritas</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">MRD</span>Meridian</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">ATL</span>Atlas Labs</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">CPH</span>Cipher</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">LMN</span>Luminary</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">SQA</span>Sequoia Tech</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">AXM</span>Axiom</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">SLR</span>Solara</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <!-- Duplicated for seamless infinite loop -->
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">VRS</span>Veritas</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">MRD</span>Meridian</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">ATL</span>Atlas Labs</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">CPH</span>Cipher</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">LMN</span>Luminary</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">SQA</span>Sequoia Tech</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">AXM</span>Axiom</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                    <span class="marquee__item"><span class="marquee__logo" aria-hidden="true">SLR</span>Solara</span>
+                    <span class="marquee__sep" aria-hidden="true">·</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             FEATURES SECTION
+             Inspired by: Vercel (grid density), Notion (card clarity)
+        ====================================================== -->
+        <section class="features section" id="features" aria-labelledby="features-title">
+            <div class="container">
+
+                <header class="section__header" data-animate="fade-up">
+                    <span class="section__tag" aria-label="Section: Features">Features</span>
+                    <h2 class="section__title" id="features-title">
+                        Everything your team needs<br class="br-desktop"> to build smarter
+                    </h2>
+                    <p class="section__subtitle">
+                        From intelligent automation to real-time collaboration — Nexus has the tools to move at the speed of thought.
+                    </p>
+                </header>
+
+                <div class="features__grid" role="list">
+
+                    <article class="feature-card" data-animate="fade-up" data-tilt role="listitem">
+                        <div class="feature-card__icon" aria-hidden="true">
+                            <i data-lucide="zap"></i>
+                        </div>
+                        <h3 class="feature-card__title">AI Automation</h3>
+                        <p class="feature-card__desc">Automate repetitive workflows with intelligent triggers. Let AI handle the routine so your team can focus on what matters.</p>
+                    </article>
+
+                    <article class="feature-card" data-animate="fade-up" data-tilt role="listitem">
+                        <div class="feature-card__icon" aria-hidden="true">
+                            <i data-lucide="layers"></i>
+                        </div>
+                        <h3 class="feature-card__title">Unified Workspace</h3>
+                        <p class="feature-card__desc">Bring all your tools, data, and conversations into one seamless environment. No more context switching.</p>
+                    </article>
+
+                    <article class="feature-card" data-animate="fade-up" data-tilt role="listitem">
+                        <div class="feature-card__icon" aria-hidden="true">
+                            <i data-lucide="bar-chart-2"></i>
+                        </div>
+                        <h3 class="feature-card__title">Real-Time Analytics</h3>
+                        <p class="feature-card__desc">Live dashboards and predictive insights powered by AI. Make data-driven decisions with absolute clarity.</p>
+                    </article>
+
+                    <article class="feature-card" data-animate="fade-up" data-tilt role="listitem">
+                        <div class="feature-card__icon" aria-hidden="true">
+                            <i data-lucide="shield-check"></i>
+                        </div>
+                        <h3 class="feature-card__title">Enterprise Security</h3>
+                        <p class="feature-card__desc">SOC 2 Type II certified. End-to-end encryption with granular access controls, audit logs, and GDPR compliance.</p>
+                    </article>
+
+                    <article class="feature-card" data-animate="fade-up" data-tilt role="listitem">
+                        <div class="feature-card__icon" aria-hidden="true">
+                            <i data-lucide="git-branch"></i>
+                        </div>
+                        <h3 class="feature-card__title">Version Control</h3>
+                        <p class="feature-card__desc">Track every change with full history. Roll back instantly, compare versions, and collaborate without conflict.</p>
+                    </article>
+
+                    <article class="feature-card" data-animate="fade-up" data-tilt role="listitem">
+                        <div class="feature-card__icon" aria-hidden="true">
+                            <i data-lucide="globe"></i>
+                        </div>
+                        <h3 class="feature-card__title">Global Edge Network</h3>
+                        <p class="feature-card__desc">Deploy to our worldwide CDN instantly. Sub-100ms response times for users anywhere on the planet.</p>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             HOW IT WORKS — 3-Step Process
+        ====================================================== -->
+        <section class="how-it-works section" id="how-it-works" aria-labelledby="how-title">
+            <div class="container">
+
+                <header class="section__header" data-animate="fade-up">
+                    <span class="section__tag">Process</span>
+                    <h2 class="section__title" id="how-title">Up and running in three steps</h2>
+                    <p class="section__subtitle">From signup to full production in under 10 minutes.</p>
+                </header>
+
+                <ol class="steps__list" role="list">
+                    <li class="step" data-animate="fade-up">
+                        <div class="step__number" aria-hidden="true">01</div>
+                        <div class="step__icon" aria-hidden="true">
+                            <i data-lucide="plug"></i>
+                        </div>
+                        <div class="step__content">
+                            <h3 class="step__title">Connect Your Stack</h3>
+                            <p class="step__desc">
+                                Integrate your existing tools in seconds. Nexus supports 200+ native integrations — Slack, GitHub, Notion, Salesforce, and more — with zero config.
+                            </p>
+                        </div>
+                    </li>
+
+                    <li class="step__connector" aria-hidden="true">
+                        <div class="step__connector-line"></div>
+                    </li>
+
+                    <li class="step" data-animate="fade-up">
+                        <div class="step__number" aria-hidden="true">02</div>
+                        <div class="step__icon" aria-hidden="true">
+                            <i data-lucide="brain"></i>
+                        </div>
+                        <div class="step__content">
+                            <h3 class="step__title">Train Your AI</h3>
+                            <p class="step__desc">
+                                Nexus learns your team's patterns and preferences. Our adaptive AI models grow smarter with every interaction, providing tailored suggestions over time.
+                            </p>
+                        </div>
+                    </li>
+
+                    <li class="step__connector" aria-hidden="true">
+                        <div class="step__connector-line"></div>
+                    </li>
+
+                    <li class="step" data-animate="fade-up">
+                        <div class="step__number" aria-hidden="true">03</div>
+                        <div class="step__icon" aria-hidden="true">
+                            <i data-lucide="rocket"></i>
+                        </div>
+                        <div class="step__content">
+                            <h3 class="step__title">Ship Faster</h3>
+                            <p class="step__desc">
+                                Watch your velocity increase week over week. Our users report 3× productivity improvements within the first 30 days — or we'll help you personally.
+                            </p>
+                        </div>
+                    </li>
+                </ol>
+
+            </div>
+        </section>
+
+        <!-- =====================================================
+             STATS SECTION — Animated counters
+        ====================================================== -->
+        <section class="stats" aria-label="Nexus AI by the numbers">
+            <div class="container">
+                <div class="stats__grid" role="list">
+
+                    <div class="stat-item" data-animate="fade-up" role="listitem">
+                        <div class="stat-item__display">
+                            <span class="stat-item__value" data-count="12000">0</span>
+                            <span class="stat-item__suffix">+</span>
+                        </div>
+                        <p class="stat-item__label">Active Teams</p>
+                    </div>
+
+                    <div class="stat-item" data-animate="fade-up" role="listitem">
+                        <div class="stat-item__display">
+                            <span class="stat-item__value" data-count="99">0</span>
+                            <span class="stat-item__suffix">%</span>
+                        </div>
+                        <p class="stat-item__label">Uptime SLA</p>
+                    </div>
+
+                    <div class="stat-item" data-animate="fade-up" role="listitem">
+                        <div class="stat-item__display">
+                            <span class="stat-item__value" data-count="200">0</span>
+                            <span class="stat-item__suffix">+</span>
+                        </div>
+                        <p class="stat-item__label">Integrations</p>
+                    </div>
+
+                    <div class="stat-item" data-animate="fade-up" role="listitem">
+                        <div class="stat-item__display">
+                            <span class="stat-item__value" data-count="3">0</span>
+                            <span class="stat-item__suffix">×</span>
+                        </div>
+                        <p class="stat-item__label">Productivity Boost</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             TESTIMONIALS SECTION
+             Inspired by: Webflow (enterprise feel), Notion (warmth)
+        ====================================================== -->
+        <section class="testimonials section" id="testimonials" aria-labelledby="testimonials-title">
+            <div class="container">
+
+                <header class="section__header" data-animate="fade-up">
+                    <span class="section__tag">Testimonials</span>
+                    <h2 class="section__title" id="testimonials-title">Loved by builders worldwide</h2>
+                </header>
+
+                <div class="testimonials__grid">
+
+                    <article class="testimonial-card" data-animate="fade-up">
+                        <div class="testimonial-card__stars" aria-label="Rated 5 out of 5 stars">
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                        </div>
+                        <blockquote>
+                            <p class="testimonial-card__quote">"Nexus AI completely changed how our engineering team operates. We shipped a 6-month roadmap in just 8 weeks. The automation capabilities are genuinely mind-blowing."</p>
+                        </blockquote>
+                        <footer class="testimonial-card__author">
+                            <div class="author__avatar" style="--avatar-bg: #C4956A;" aria-hidden="true">SC</div>
+                            <div class="author__info">
+                                <cite class="author__name">Sarah Chen</cite>
+                                <span class="author__role">CTO at Pinnacle Labs</span>
+                            </div>
+                        </footer>
+                    </article>
+
+                    <article class="testimonial-card testimonial-card--featured" data-animate="fade-up">
+                        <div class="testimonial-card__stars" aria-label="Rated 5 out of 5 stars">
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                        </div>
+                        <blockquote>
+                            <p class="testimonial-card__quote">"I've tried every productivity tool out there. Nothing comes close. The AI understands context in a way that feels like having a brilliant assistant who never sleeps."</p>
+                        </blockquote>
+                        <footer class="testimonial-card__author">
+                            <div class="author__avatar" style="--avatar-bg: #7BA8B5;" aria-hidden="true">MW</div>
+                            <div class="author__info">
+                                <cite class="author__name">Marcus Williams</cite>
+                                <span class="author__role">Founder at Stellar Systems</span>
+                            </div>
+                        </footer>
+                    </article>
+
+                    <article class="testimonial-card" data-animate="fade-up">
+                        <div class="testimonial-card__stars" aria-label="Rated 5 out of 5 stars">
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                        </div>
+                        <blockquote>
+                            <p class="testimonial-card__quote">"The seamless integration with our existing tools made adoption effortless. Our support team now handles 4× more tickets with the same headcount. Remarkable."</p>
+                        </blockquote>
+                        <footer class="testimonial-card__author">
+                            <div class="author__avatar" style="--avatar-bg: #A5856F;" aria-hidden="true">PS</div>
+                            <div class="author__info">
+                                <cite class="author__name">Priya Sharma</cite>
+                                <span class="author__role">Head of Operations at Horizon Tech</span>
+                            </div>
+                        </footer>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             PRICING SECTION
+             Inspired by: Stripe (clarity), Relume (layout)
+        ====================================================== -->
+        <section class="pricing section" id="pricing" aria-labelledby="pricing-title">
+            <div class="container">
+
+                <header class="section__header" data-animate="fade-up">
+                    <span class="section__tag">Pricing</span>
+                    <h2 class="section__title" id="pricing-title">Simple, transparent pricing</h2>
+                    <p class="section__subtitle">Start free. Scale as you grow. No hidden fees, ever.</p>
+                </header>
+
+                <!-- Monthly / Annual Toggle -->
+                <div class="pricing__toggle" data-animate="fade-up" role="group" aria-label="Choose billing period">
+                    <button class="toggle__btn toggle__btn--active" id="btn-monthly" aria-pressed="true">Monthly</button>
+                    <button class="toggle__btn" id="btn-annual" aria-pressed="false">
+                        Annual
+                        <span class="toggle__save-badge" aria-label="Save 20 percent">Save 20%</span>
+                    </button>
+                </div>
+
+                <!-- Pricing Cards Grid -->
+                <div class="pricing__grid">
+
+                    <!-- Starter -->
+                    <article class="pricing-card" data-animate="fade-up">
+                        <header class="pricing-card__header">
+                            <h3 class="pricing-card__plan">Starter</h3>
+                            <div class="pricing-card__price" aria-live="polite">
+                                <span class="price__symbol">$</span>
+                                <span class="price__amount" data-monthly="0" data-annual="0">0</span>
+                                <span class="price__period">/month</span>
+                            </div>
+                            <p class="pricing-card__desc">Perfect for individuals getting started with AI workflows.</p>
+                        </header>
+                        <ul class="pricing-card__features" role="list">
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>Up to 3 workspaces</li>
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>5 GB storage</li>
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>Basic AI features</li>
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>Community support</li>
+                            <li class="feature--excluded"><i data-lucide="x"     aria-hidden="true"></i>Advanced automation</li>
+                            <li class="feature--excluded"><i data-lucide="x"     aria-hidden="true"></i>Priority support</li>
+                        </ul>
+                        <a href="#" class="btn btn--outline btn--full">Get started free</a>
+                    </article>
+
+                    <!-- Pro — Featured -->
+                    <article class="pricing-card pricing-card--featured" data-animate="fade-up">
+                        <div class="pricing-card__badge">Most Popular</div>
+                        <header class="pricing-card__header">
+                            <h3 class="pricing-card__plan">Pro</h3>
+                            <div class="pricing-card__price" aria-live="polite">
+                                <span class="price__symbol">$</span>
+                                <span class="price__amount" data-monthly="29" data-annual="23">29</span>
+                                <span class="price__period">/month</span>
+                            </div>
+                            <p class="pricing-card__desc">For growing teams that need power, speed, and flexibility.</p>
+                        </header>
+                        <ul class="pricing-card__features" role="list">
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>Unlimited workspaces</li>
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>100 GB storage</li>
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>Full AI suite</li>
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>Advanced automation</li>
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>Priority support</li>
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>API access</li>
+                        </ul>
+                        <a href="#" class="btn btn--primary btn--full">Start Pro trial</a>
+                    </article>
+
+                    <!-- Enterprise -->
+                    <article class="pricing-card" data-animate="fade-up">
+                        <header class="pricing-card__header">
+                            <h3 class="pricing-card__plan">Enterprise</h3>
+                            <div class="pricing-card__price">
+                                <span class="price__amount price__amount--custom">Custom</span>
+                            </div>
+                            <p class="pricing-card__desc">For large organizations with complex needs and full control.</p>
+                        </header>
+                        <ul class="pricing-card__features" role="list">
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>Everything in Pro</li>
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>Unlimited storage</li>
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>Custom AI training</li>
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>SSO &amp; SAML</li>
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>Dedicated support</li>
+                            <li class="feature--included"><i data-lucide="check" aria-hidden="true"></i>99.99% SLA guarantee</li>
+                        </ul>
+                        <a href="#" class="btn btn--outline btn--full">Contact sales</a>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             FAQ SECTION — Accordion
+             Pure HTML <details>/<summary> + CSS + JS enhancement
+        ====================================================== -->
+        <section class="faq section" id="faq" aria-labelledby="faq-title">
+            <div class="container">
+
+                <header class="section__header" data-animate="fade-up">
+                    <span class="section__tag">FAQ</span>
+                    <h2 class="section__title" id="faq-title">Frequently asked questions</h2>
+                    <p class="section__subtitle">
+                        Still have questions?
+                        <a href="mailto:hello@nexusai.com" class="inline-link">Say hello</a> — we reply fast.
+                    </p>
+                </header>
+
+                <div class="faq__list" data-animate="fade-up">
+
+                    <details class="faq__item" open>
+                        <summary class="faq__question">
+                            <span>What makes Nexus AI different from other productivity tools?</span>
+                            <span class="faq__chevron" aria-hidden="true">
+                                <i data-lucide="chevron-down"></i>
+                            </span>
+                        </summary>
+                        <div class="faq__answer">
+                            <p>Nexus AI is purpose-built around intelligent automation. Unlike tools that require manual process management, Nexus learns from your team's patterns and proactively suggests optimizations. Our AI layer sits across your entire workflow — not isolated in individual features — creating a system that continuously improves.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq__item">
+                        <summary class="faq__question">
+                            <span>Can I migrate my data from other platforms?</span>
+                            <span class="faq__chevron" aria-hidden="true">
+                                <i data-lucide="chevron-down"></i>
+                            </span>
+                        </summary>
+                        <div class="faq__answer">
+                            <p>Yes! We offer one-click migration from Notion, Asana, Monday.com, Trello, Jira, and 50+ other platforms. Your data, structure, and attachments transfer completely. Most migrations complete in under 15 minutes, and our team provides hands-on support for enterprise migrations.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq__item">
+                        <summary class="faq__question">
+                            <span>Is my data secure and private?</span>
+                            <span class="faq__chevron" aria-hidden="true">
+                                <i data-lucide="chevron-down"></i>
+                            </span>
+                        </summary>
+                        <div class="faq__answer">
+                            <p>Security is our absolute priority. We are SOC 2 Type II certified, GDPR compliant, and ISO 27001 certified. All data is encrypted at rest (AES-256) and in transit (TLS 1.3). We never train our AI on your private data without explicit written consent. Enterprise plans include dedicated infrastructure options.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq__item">
+                        <summary class="faq__question">
+                            <span>What integrations does Nexus AI support?</span>
+                            <span class="faq__chevron" aria-hidden="true">
+                                <i data-lucide="chevron-down"></i>
+                            </span>
+                        </summary>
+                        <div class="faq__answer">
+                            <p>We support 200+ native integrations including Slack, GitHub, GitLab, Salesforce, HubSpot, Stripe, Google Workspace, Microsoft 365, Figma, Linear, and many more. Our open REST API and webhook system lets you connect to virtually any tool in your stack.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq__item">
+                        <summary class="faq__question">
+                            <span>Can I cancel my subscription anytime?</span>
+                            <span class="faq__chevron" aria-hidden="true">
+                                <i data-lucide="chevron-down"></i>
+                            </span>
+                        </summary>
+                        <div class="faq__answer">
+                            <p>Absolutely. No contracts, no lock-in. Cancel anytime from your account settings in one click. Your data remains accessible for 30 days after cancellation, giving you plenty of time to export everything. We believe you should stay because Nexus is genuinely valuable — not because leaving is difficult.</p>
+                        </div>
+                    </details>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             CTA BANNER — Final conversion section
+        ====================================================== -->
+        <section class="cta-banner section" aria-labelledby="cta-title">
+            <div class="container">
+                <div class="cta-banner__card" data-animate="fade-up">
+                    <div class="cta-banner__bg" aria-hidden="true">
+                        <div class="cta-banner__orb cta-banner__orb--1"></div>
+                        <div class="cta-banner__orb cta-banner__orb--2"></div>
+                    </div>
+                    <div class="cta-banner__content">
+                        <h2 class="cta-banner__title" id="cta-title">
+                            Ready to build the future?
+                        </h2>
+                        <p class="cta-banner__subtitle">
+                            Join 12,000+ teams already using Nexus AI to move faster,<br class="br-desktop"> think clearer, and build better.
+                        </p>
+                        <div class="cta-banner__actions">
+                            <a href="#" class="btn btn--primary btn--lg">Start for free</a>
+                            <a href="#" class="btn btn--ghost-light btn--lg">Book a demo</a>
+                        </div>
+                        <p class="cta-banner__note">
+                            <i data-lucide="shield-check" aria-hidden="true"></i>
+                            No credit card required · Free forever plan available
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =====================================================
+         FOOTER
+         Inspired by: Shopify (structure), TailwindCSS (minimalism)
+    ====================================================== -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+
+            <div class="footer__grid">
+
+                <!-- Brand Column -->
+                <div class="footer__brand">
+                    <a href="#" class="footer__logo" aria-label="Nexus AI — Go to homepage">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
+                            <path d="M16 2L30 9V23L16 30L2 23V9L16 2Z" fill="var(--color-mocha)" opacity="0.9"/>
+                            <path d="M16 9L23 12.5V19.5L16 23L9 19.5V12.5L16 9Z" fill="var(--color-blue)" opacity="0.85"/>
+                            <circle cx="16" cy="16" r="3" fill="var(--color-bg)"/>
+                        </svg>
+                        <span class="footer__logo-text">Nexus <span>AI</span></span>
+                    </a>
+                    <p class="footer__tagline">
+                        Building the future of intelligent workflows for teams who refuse to settle for average.
+                    </p>
+                    <!-- Social Links -->
+                    <nav class="footer__social" aria-label="Social media links">
+                        <a href="#" class="social__link" aria-label="Twitter / X">
+                            <i data-lucide="twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" class="social__link" aria-label="GitHub">
+                            <i data-lucide="github" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" class="social__link" aria-label="LinkedIn">
+                            <i data-lucide="linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" class="social__link" aria-label="YouTube">
+                            <i data-lucide="youtube" aria-hidden="true"></i>
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- Product Links -->
+                <nav class="footer__nav" aria-label="Product navigation">
+                    <h4 class="footer__nav-title">Product</h4>
+                    <ul class="footer__nav-list" role="list">
+                        <li><a href="#features"     class="footer__nav-link">Features</a></li>
+                        <li><a href="#pricing"      class="footer__nav-link">Pricing</a></li>
+                        <li><a href="#"             class="footer__nav-link">Changelog</a></li>
+                        <li><a href="#"             class="footer__nav-link">Roadmap</a></li>
+                        <li><a href="#"             class="footer__nav-link">Integrations</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Company Links -->
+                <nav class="footer__nav" aria-label="Company navigation">
+                    <h4 class="footer__nav-title">Company</h4>
+                    <ul class="footer__nav-list" role="list">
+                        <li><a href="#" class="footer__nav-link">About</a></li>
+                        <li><a href="#" class="footer__nav-link">Blog</a></li>
+                        <li><a href="#" class="footer__nav-link">Careers</a></li>
+                        <li><a href="#" class="footer__nav-link">Press Kit</a></li>
+                        <li><a href="#" class="footer__nav-link">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Resources Links -->
+                <nav class="footer__nav" aria-label="Resources navigation">
+                    <h4 class="footer__nav-title">Resources</h4>
+                    <ul class="footer__nav-list" role="list">
+                        <li><a href="#" class="footer__nav-link">Documentation</a></li>
+                        <li><a href="#" class="footer__nav-link">API Reference</a></li>
+                        <li><a href="#" class="footer__nav-link">Community</a></li>
+                        <li><a href="#" class="footer__nav-link">Status Page</a></li>
+                        <li><a href="#" class="footer__nav-link">Security</a></li>
+                    </ul>
+                </nav>
+
+            </div>
+
+            <!-- Footer Bottom Bar -->
+            <div class="footer__bottom">
+                <p class="footer__copyright">
+                    © <span id="current-year">2025</span> Nexus AI, Inc. All rights reserved.
+                </p>
+                <nav class="footer__legal" aria-label="Legal links">
+                    <a href="#" class="footer__legal-link">Privacy Policy</a>
+                    <a href="#" class="footer__legal-link">Terms of Service</a>
+                    <a href="#" class="footer__legal-link">Cookie Policy</a>
+                </nav>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" aria-label="Scroll back to top" title="Back to top">
+        <i data-lucide="arrow-up" aria-hidden="true"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script src="js/script.js"></script>
+    <!-- Initialize Lucide icons after DOM + script -->
+    <script>lucide.createIcons();</script>
+
+</body>
+</html>
