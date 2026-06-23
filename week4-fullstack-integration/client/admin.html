@@ -34,9 +34,9 @@
         <!-- Brand -->
         <a href="index.html" class="admin-header__brand" aria-label="Nexus AI — Go to landing page">
             <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-                <path d="M16 2L30 9V23L16 30L2 23V9L16 2Z" fill="var(--color-mocha)" opacity="0.9"/>
-                <path d="M16 9L23 12.5V19.5L16 23L9 19.5V12.5L16 9Z" fill="var(--color-blue)" opacity="0.85"/>
-                <circle cx="16" cy="16" r="3" fill="var(--color-bg)"/>
+                <path d="M16 2L30 9V23L16 30L2 23V9L16 2Z" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.55)" stroke-width="1"/>
+                <path d="M16 9L23 12.5V19.5L16 23L9 19.5V12.5L16 9Z" fill="var(--color-blue)" opacity="0.90"/>
+                <circle cx="16" cy="16" r="3" fill="#fff"/>
             </svg>
             <span class="admin-header__logo-text">Nexus <span>AI</span></span>
         </a>
@@ -46,26 +46,17 @@
 
         <!-- Right actions -->
         <div class="admin-header__actions">
-            <!-- Server status pill -->
-            <span
-                class="server-status server-status--error"
-                id="server-status"
-                role="status"
-                aria-live="polite"
-                title="Backend server connection status"
-            >Checking…</span>
-
-            <!-- Theme toggle — same as landing page, shares nexus-theme localStorage key -->
-            <button class="theme-toggle" id="theme-toggle" aria-label="Switch to light mode" title="Toggle theme">
-                <i data-lucide="sun"  class="icon-sun"  aria-hidden="true"></i>
-                <i data-lucide="moon" class="icon-moon" aria-hidden="true"></i>
-            </button>
-
             <!-- Back to site -->
             <a href="index.html" class="admin-back-link">
                 <i data-lucide="arrow-left" aria-hidden="true" style="width:14px;height:14px;"></i>
                 Back to site
             </a>
+
+            <!-- Theme toggle — rightmost, same as landing page, shares nexus-theme localStorage key -->
+            <button class="theme-toggle" id="theme-toggle" aria-label="Switch to light mode" title="Toggle theme">
+                <i data-lucide="sun"  class="icon-sun"  aria-hidden="true"></i>
+                <i data-lucide="moon" class="icon-moon" aria-hidden="true"></i>
+            </button>
         </div>
     </header>
 

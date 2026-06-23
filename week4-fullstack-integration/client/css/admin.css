@@ -65,11 +65,38 @@
     align-items: center;
     gap: 0.75rem;
     padding: 0 1.5rem;
-    height: 56px;
-    background: rgba(26, 16, 10, 0.95);
-    border-bottom: 1px solid var(--color-border);
+    height: 78px;
+    background: linear-gradient(135deg, #7A5C46 0%, #9A7252 100%);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    position: relative;
+    overflow: hidden;
+}
+/* Shimmer sweep — mirrors landing-page nav */
+.admin-header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 40%;
+    background: linear-gradient(
+        105deg,
+        transparent 0%,
+        rgba(255,255,255,0.14) 45%,
+        rgba(255,255,255,0.22) 50%,
+        rgba(255,255,255,0.14) 55%,
+        transparent 100%
+    );
+    animation: header-shimmer 5s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+.admin-header > * { position: relative; z-index: 1; }
+
+@keyframes header-shimmer {
+    0%   { transform: translateX(-200%); }
+    60%  { transform: translateX(400%); }
+    100% { transform: translateX(400%); }
 }
 
 .admin-header__brand {
@@ -83,20 +110,20 @@
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 1rem;
-    color: var(--color-text);
+    color: #fff;
     white-space: nowrap;
 }
-.admin-header__logo-text span { color: var(--color-mocha); }
+.admin-header__logo-text span { color: rgba(255,255,255,0.80); }
 
 .admin-header__divider {
-    color: var(--color-text-faint);
+    color: rgba(255,255,255,0.40);
     font-size: 0.875rem;
     user-select: none;
 }
 .admin-header__title {
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--color-text-muted);
+    color: rgba(255,255,255,0.75);
     white-space: nowrap;
 }
 .admin-header__actions {
@@ -127,19 +154,19 @@
     flex-shrink: 0;
 }
 .server-status--ok {
-    background: rgba(74, 222, 128, 0.12);
-    color: #4ade80;
-    border: 1px solid rgba(74, 222, 128, 0.25);
+    background: rgba(255,255,255,0.15);
+    color: #d4fce3;
+    border: 1px solid rgba(255,255,255,0.30);
 }
 .server-status--ok::before {
     background: #4ade80;
-    box-shadow: 0 0 6px rgba(74, 222, 128, 0.6);
+    box-shadow: 0 0 6px rgba(74, 222, 128, 0.7);
     animation: status-pulse 2s ease-in-out infinite;
 }
 .server-status--error {
-    background: rgba(248, 113, 113, 0.12);
-    color: #f87171;
-    border: 1px solid rgba(248, 113, 113, 0.25);
+    background: rgba(255,255,255,0.15);
+    color: #ffd4d4;
+    border: 1px solid rgba(255,255,255,0.30);
 }
 .server-status--error::before { background: #f87171; }
 
@@ -153,7 +180,7 @@
     align-items: center;
     gap: 0.3rem;
     font-size: 0.75rem;
-    color: var(--color-text-muted);
+    color: rgba(255,255,255,0.82);
     text-decoration: none;
     padding: 0.3rem 0.65rem;
     border-radius: var(--radius-sm);
@@ -161,8 +188,20 @@
     white-space: nowrap;
 }
 .admin-back-link:hover {
-    color: var(--color-mocha);
-    background: rgba(165, 133, 111, 0.08);
+    color: #fff;
+    background: rgba(255,255,255,0.14);
+}
+
+/* Theme toggle in admin header — white on mocha */
+.admin-header .theme-toggle {
+    color: rgba(255,255,255,0.85);
+    border-color: rgba(255,255,255,0.25);
+    background: transparent;
+}
+.admin-header .theme-toggle:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.14);
+    border-color: rgba(255,255,255,0.45);
 }
 
 
@@ -666,11 +705,7 @@
    while re-using the CSS token switches from style.css.
    ========================================================= */
 
-/* ── Header ─────────────────────────────────────────────── */
-[data-theme="light"] .admin-header {
-    background: rgba(250, 247, 243, 0.96); /* warm off-white, matches light page bg */
-    border-bottom-color: rgba(165, 133, 111, 0.18);
-}
+/* ── Header — mocha gradient in both themes, no light-mode override needed ── */
 
 /* ── Server status pills ─────────────────────────────────── */
 [data-theme="light"] .server-status--ok {

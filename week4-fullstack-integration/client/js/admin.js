@@ -17,7 +17,7 @@
  * no assuming 404 throws, no console.log as the only error handling.
  */
 
-import { getLeads, updateLead, deleteLead, getHealth, ApiError } from './api.js';
+import { getLeads, updateLead, deleteLead, ApiError } from './api.js';
 
 // ─── DOM refs ─────────────────────────────────────────────────────────────────
 const leadsTable   = document.getElementById('leads-table');   // parent table — was permanently hidden (bug fix)
@@ -38,8 +38,6 @@ const statNew       = document.getElementById('stat-new');
 const statContacted = document.getElementById('stat-contacted');
 const statConverted = document.getElementById('stat-converted');
 
-// Server status indicator
-const serverIndicator = document.getElementById('server-status');
 
 // Toast
 const toastContainer = document.getElementById('toast-container');
@@ -51,26 +49,9 @@ let searchTimer  = null;
 
 // ─── Initialise ───────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
-  await checkServer();
   await loadLeads();
   setupControls();
 });
-
-// ─── Server health check ──────────────────────────────────────────────────────
-async function checkServer() {
-  try {
-    await getHealth();
-    if (serverIndicator) {
-      serverIndicator.textContent = 'Server connected';
-      serverIndicator.className   = 'server-status server-status--ok';
-    }
-  } catch {
-    if (serverIndicator) {
-      serverIndicator.textContent = 'Server offline';
-      serverIndicator.className   = 'server-status server-status--error';
-    }
-  }
-}
 
 // ─── Load leads ───────────────────────────────────────────────────────────────
 async function loadLeads() {

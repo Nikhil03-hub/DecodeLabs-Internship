@@ -55,8 +55,8 @@
     --color-text-muted: #9E8B7F;   /* Muted warm text */
     --color-text-faint: #6B5748;   /* Very muted text */
 
-    --color-nav-bg:     rgba(14, 9, 6, 0.78);
-    --color-nav-border: rgba(165, 133, 111, 0.10);
+    --color-nav-bg:     linear-gradient(135deg, #7A5C46 0%, #9A7252 100%);
+    --color-nav-border: rgba(255, 255, 255, 0.12);
 
     /* --- Shadows --- */
     --shadow-sm:   0 2px 8px rgba(0, 0, 0, 0.35);
@@ -106,7 +106,7 @@
     /* --- Layout --- */
     --container-max:    1200px;
     --container-pad:    clamp(1rem, 4vw, 2rem);
-    --nav-height:       70px;
+    --nav-height:       78px;
 }
 
 /* Light Theme Override */
@@ -122,8 +122,8 @@
     --color-text-muted:  #6B5748;
     --color-text-faint:  #A5856F;
 
-    --color-nav-bg:      rgba(242, 240, 234, 0.85);
-    --color-nav-border:  rgba(165, 133, 111, 0.15);
+    --color-nav-bg:      linear-gradient(135deg, #A5856F 0%, #C4956A 100%);
+    --color-nav-border:  rgba(255, 255, 255, 0.12);
 
     --shadow-sm:   0 2px 8px rgba(100, 70, 50, 0.10);
     --shadow-md:   0 8px 24px rgba(100, 70, 50, 0.12);
@@ -395,13 +395,13 @@ strong { font-weight: 600; }
     transition: background var(--transition-slow), box-shadow var(--transition-slow);
 }
 
-/* Scrolled state (class added by JS) */
+/* Scrolled state (class added by JS) — same mocha, slightly richer */
 .header--scrolled {
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
-    background: rgba(14, 9, 6, 0.92);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.30);
+    background: linear-gradient(135deg, #6A4C36 0%, #8A6244 100%);
 }
 [data-theme="light"] .header--scrolled {
-    background: rgba(242, 240, 234, 0.95);
+    background: linear-gradient(135deg, #6A4C36 0%, #8A6244 100%);
 }
 
 .nav {
@@ -410,6 +410,13 @@ strong { font-weight: 600; }
     align-items: center;
     justify-content: space-between;
     gap: var(--space-3);
+}
+
+/* Override container's max-width for the header nav — full-width like admin */
+.header .nav {
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: clamp(1.5rem, 4vw, 2.5rem);
 }
 
 /* Logo */
@@ -575,6 +582,90 @@ strong { font-weight: 600; }
 [data-theme="dark"]  .icon-moon { display: none;  }
 [data-theme="light"] .icon-sun  { display: none;  }
 [data-theme="light"] .icon-moon { display: block; }
+
+
+/* =========================================================
+   07b. NAV — Text & button overrides for mocha gradient header
+   ========================================================= */
+
+/* Brand & links on warm mocha header — always white regardless of theme */
+.nav__logo-text                { color: #fff; }
+.nav__logo-accent              { color: rgba(255,255,255,0.80); }
+.nav__link                     { color: rgba(255,255,255,0.82); }
+.nav__link:hover               { color: #fff; background: rgba(255,255,255,0.12); }
+
+/* Hamburger bars white on mocha */
+.hamburger__bar                { background-color: #fff; }
+
+/* Theme toggle white on mocha */
+.nav .theme-toggle {
+    color: rgba(255,255,255,0.85);
+    border-color: rgba(255,255,255,0.25);
+    background: transparent;
+}
+.nav .theme-toggle:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.14);
+    border-color: rgba(255,255,255,0.45);
+}
+
+/* "Log in" — white ghost button on mocha */
+.nav__actions .btn--ghost {
+    color: rgba(255,255,255,0.90);
+    border-color: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.10);
+}
+.nav__actions .btn--ghost:hover {
+    color: #fff;
+    border-color: rgba(255,255,255,0.55);
+    background: rgba(255,255,255,0.20);
+    transform: translateY(-1px);
+}
+
+/* "Get Early Access" — inverted: white pill + deep mocha text */
+.nav__actions .btn--primary {
+    background: #fff;
+    color: #5C3418;
+    border-color: #fff;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.20);
+}
+.nav__actions .btn--primary:hover {
+    background: #F2F0EA;
+    border-color: #F2F0EA;
+    color: #5C3418;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.24);
+    transform: translateY(-1px);
+}
+
+/* Header shimmer — bright light sweeps left→right continuously */
+.header {
+    position: relative;
+    overflow: hidden;
+}
+.header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 40%;
+    background: linear-gradient(
+        105deg,
+        transparent 0%,
+        rgba(255,255,255,0.14) 45%,
+        rgba(255,255,255,0.22) 50%,
+        rgba(255,255,255,0.14) 55%,
+        transparent 100%
+    );
+    animation: header-shimmer 5s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+.header > * { position: relative; z-index: 1; }
+
+@keyframes header-shimmer {
+    0%   { transform: translateX(-200%); }
+    60%  { transform: translateX(400%); }
+    100% { transform: translateX(400%); }
+}
 
 
 /* =========================================================
@@ -901,6 +992,124 @@ strong { font-weight: 600; }
     background: var(--color-border-strong);
     border-radius: 3px;
 }
+
+/* ─── Mockup text content overrides ─────────────────────── */
+
+/* URL bar text */
+.mockup__url {
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    font-size: 8px;
+    font-family: var(--font-heading);
+    color: var(--color-text-faint);
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Sidebar logo letter */
+.mockup__sidebar-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    font-family: var(--font-heading);
+    color: #fff;
+}
+
+/* Topbar title text */
+.mockup__topbar-title {
+    height: auto;
+    width: auto;
+    background: none;
+    border-radius: 0;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+}
+
+/* Topbar CTA button text */
+.mockup__topbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7px;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    color: #fff;
+    letter-spacing: 0.01em;
+}
+
+/* Stat card — number, label, mini bar */
+.mockup__stat-num {
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    color: var(--color-text);
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+.mockup__stat-key {
+    font-size: 6px;
+    font-family: var(--font-heading);
+    color: var(--color-text-muted);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.mockup__stat-bar {
+    height: 3px;
+    width: var(--w, 65%);
+    background: linear-gradient(90deg, var(--color-mocha), var(--color-blue));
+    border-radius: 2px;
+    margin-top: 0.1rem;
+}
+
+/* Table workflow name */
+.mockup__table-cell--name {
+    flex: 1;
+    font-size: 7.5px;
+    font-family: var(--font-heading);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Toggle switch (iOS-style pill) */
+.mockup__table-cell--toggle {
+    width: 28px;
+    height: 15px;
+    border-radius: 99px;
+    flex-shrink: 0;
+    position: relative;
+    transition: background 0.25s ease;
+}
+.mockup__table-cell--toggle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    transition: left 0.25s ease;
+}
+.mockup__toggle--on {
+    background: linear-gradient(90deg, var(--color-mocha), var(--color-mocha-light));
+}
+.mockup__toggle--on::after  { left: calc(100% - 13px); }
+.mockup__toggle--off {
+    background: rgba(255,255,255,0.15);
+}
+.mockup__toggle--off::after { left: 2px; }
+
+/* ─────────────────────────────────────────────────────────── */
 
 /* Chart */
 .mockup__chart {
@@ -2424,6 +2633,81 @@ strong { font-weight: 600; }
         transform: none !important;
         transition: none !important;
     }
+}
+
+/* =========================================================
+   38. PREMIUM POLISH — Button shimmer + badge glow
+   ========================================================= */
+
+/* CTA button shimmer on hover (scoped away from nav's inverted white button) */
+.btn--primary {
+    position: relative;
+    overflow: hidden;
+}
+.btn--primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 55%;
+    background: linear-gradient(
+        105deg,
+        transparent 0%,
+        rgba(255,255,255,0.18) 40%,
+        rgba(255,255,255,0.28) 50%,
+        rgba(255,255,255,0.18) 60%,
+        transparent 100%
+    );
+    transform: translateX(-200%);
+    pointer-events: none;
+    z-index: 1;
+}
+.btn--primary:hover::before {
+    animation: btn-shimmer 0.65s ease forwards;
+}
+
+@keyframes btn-shimmer {
+    0%   { transform: translateX(-200%); }
+    100% { transform: translateX(320%); }
+}
+
+/* Hero announcement badge — soft breathing glow */
+.hero__badge {
+    animation: badge-breathe 3.5s ease-in-out infinite;
+}
+@keyframes badge-breathe {
+    0%, 100% { box-shadow: 0 0 0   0   rgba(165,133,111,0); }
+    50%       { box-shadow: 0 0 18px 2px rgba(165,133,111,0.22), 0 0 6px 0 rgba(160,212,224,0.10); }
+}
+
+/* Stat card accent bar on admin — identical shimmer sweep on hover */
+.stat-card {
+    position: relative;
+    overflow: hidden;
+}
+.stat-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 50%;
+    background: linear-gradient(
+        105deg,
+        transparent 0%,
+        rgba(255,255,255,0.06) 45%,
+        rgba(255,255,255,0.10) 50%,
+        rgba(255,255,255,0.06) 55%,
+        transparent 100%
+    );
+    transform: translateX(-200%);
+    pointer-events: none;
+}
+.stat-card:hover::after {
+    animation: btn-shimmer 0.6s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn--primary::before,
+    .hero__badge,
+    .stat-card::after { animation: none !important; }
 }
 
 /* =========================================================
