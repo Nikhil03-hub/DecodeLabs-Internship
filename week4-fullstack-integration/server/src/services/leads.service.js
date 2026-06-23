@@ -40,19 +40,23 @@ const getAll = async ({ status, search } = {}) => {
   const query = {};
   if (status) query.status = status;
   if (search) {
-    const re = new RegExp(search, 'i');
+    // Escape special regex chars to prevent ReDoS / 500 on inputs like "("
+    const safe = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(safe, 'i');
     query.$or = [{ name: re }, { email: re }, { company: re }];
   }
-  return Lead.find(query).sort({ createdAt: -1 }).lean({ virtuals: true });
+  // Use full docs + toJSON() so the transform runs and _id/__v are stripped consistently
+  const docs = await Lead.find(query).sort({ createdAt: -1 });
+  return docs.map(d => d.toJSON());
 };
 
 const getById = async (id) => {
   let lead;
   try {
-    lead = await Lead.findById(id).lean({ virtuals: true });
+    lead = await Lead.findById(id);
   } catch (err) { handleMongooseError(err); }
   if (!lead) throw new ApiError(404, 'NOT_FOUND', 'Lead not found.');
-  return lead;
+  return lead.toJSON();
 };
 
 const createLead = async (data) => {
@@ -76,10 +80,10 @@ const patchLead = async (id, partial) => {
       id,
       { $set: partial },
       { new: true, runValidators: true }
-    ).lean({ virtuals: true });
+    );
   } catch (err) { handleMongooseError(err); }
   if (!lead) throw new ApiError(404, 'NOT_FOUND', 'Lead not found.');
-  return lead;
+  return lead.toJSON();
 };
 
 const replaceLead = async (id, data) => {
@@ -94,11 +98,10 @@ const replaceLead = async (id, data) => {
   };
   let lead;
   try {
-    lead = await Lead.findByIdAndUpdate(id, update, { new: true, runValidators: true })
-      .lean({ virtuals: true });
+    lead = await Lead.findByIdAndUpdate(id, update, { new: true, runValidators: true });
   } catch (err) { handleMongooseError(err); }
   if (!lead) throw new ApiError(404, 'NOT_FOUND', 'Lead not found.');
-  return lead;
+  return lead.toJSON();
 };
 
 const deleteLead = async (id) => {

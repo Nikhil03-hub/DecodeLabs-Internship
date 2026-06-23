@@ -173,10 +173,18 @@ if (toastContainer) {
     toast.setAttribute('role', 'alert');
     toast.setAttribute('aria-live', 'assertive');
 
-    const icon = { success: '✓', error: '✕', info: 'ℹ' }[type] || 'ℹ';
-    toast.innerHTML =
-      `<span class="toast__icon" aria-hidden="true">${icon}</span>` +
-      `<span class="toast__msg">${escapeHtml(message)}</span>`;
+    // Build with createElement + textContent — consistent with XSS-safe story everywhere else
+    const iconEl = document.createElement('span');
+    iconEl.className = 'toast__icon';
+    iconEl.setAttribute('aria-hidden', 'true');
+    iconEl.textContent = { success: '✓', error: '✕', info: 'ℹ' }[type] || 'ℹ';
+
+    const msgEl = document.createElement('span');
+    msgEl.className = 'toast__msg';
+    msgEl.textContent = message;   // textContent — XSS-safe
+
+    toast.appendChild(iconEl);
+    toast.appendChild(msgEl);
 
     toastContainer.appendChild(toast);
     // Slide in
@@ -189,11 +197,4 @@ if (toastContainer) {
   });
 }
 
-// XSS-safe string escaping for toast messages
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
+// escapeHtml removed — toast now uses createElement + textContent throughout

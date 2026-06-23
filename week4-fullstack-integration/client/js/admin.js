@@ -135,7 +135,7 @@ function renderLeads(leads) {
 function buildRow(lead) {
   const tr = document.createElement('tr');
   tr.className     = 'leads-row';
-  tr.dataset.id    = lead.id ?? lead._id;
+  tr.dataset.id    = lead.id;
 
   // ── Name + email cell ──
   const nameTd = document.createElement('td');
@@ -184,7 +184,7 @@ function buildRow(lead) {
     contactBtn.className   = 'action-btn action-btn--contact';
     contactBtn.textContent = 'Contact';
     contactBtn.setAttribute('aria-label', `Mark ${lead.name} as contacted`);
-    contactBtn.addEventListener('click', () => handleContact(lead.id ?? lead._id, tr, contactBtn));
+    contactBtn.addEventListener('click', () => handleContact(lead.id, tr, contactBtn));
     actionsTd.appendChild(contactBtn);
   }
 
@@ -193,7 +193,7 @@ function buildRow(lead) {
   deleteBtn.className   = 'action-btn action-btn--delete';
   deleteBtn.textContent = '✕';
   deleteBtn.setAttribute('aria-label', `Delete lead: ${lead.name}`);
-  deleteBtn.addEventListener('click', () => handleDelete(lead.id ?? lead._id, tr, deleteBtn));
+  deleteBtn.addEventListener('click', () => handleDelete(lead.id, tr, deleteBtn));
   actionsTd.appendChild(deleteBtn);
 
   tr.appendChild(nameTd);

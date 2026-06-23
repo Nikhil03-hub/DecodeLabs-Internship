@@ -69,9 +69,11 @@ const leadSchema = new mongoose.Schema(
     timestamps: true,       // auto createdAt + updatedAt
     toJSON: {
       virtuals: true,
+      versionKey: false,              // drops __v at the schema level
       transform(doc, ret) {
-        ret.id = ret._id.toString();  // expose id (string) alongside _id
-        delete ret.__v;               // hide Mongoose version key from clients
+        ret.id = ret._id.toString();  // expose id as a plain string
+        delete ret._id;               // never expose Mongo's internal _id
+        delete ret.__v;               // belt-and-suspenders (versionKey:false covers it)
       },
     },
   }
