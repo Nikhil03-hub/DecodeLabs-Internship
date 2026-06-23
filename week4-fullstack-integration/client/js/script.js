@@ -61,15 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const dot    = cursor && cursor.querySelector('.cursor__dot');
         const ring   = cursor && cursor.querySelector('.cursor__ring');
         let mouseX = -100, mouseY = -100, ringX = -100, ringY = -100;
-        const LERP = 0.4;
+        const LERP = 0.42; /* 0.1 = ~10 frames of lag — visible trailing effect */
 
         const moveDot = function(x, y) {
-            if (dot) dot.style.transform = 'translate(' + (x - 5) + 'px, ' + (y - 5) + 'px)';
+            if (dot) dot.style.transform = 'translate(' + (x - 4) + 'px, ' + (y - 4) + 'px)'; /* center 8px dot */
         };
         const animateRing = function() {
             ringX += (mouseX - ringX) * LERP;
             ringY += (mouseY - ringY) * LERP;
-            if (ring) ring.style.transform = 'translate(' + (ringX - 17) + 'px, ' + (ringY - 17) + 'px)';
+            if (ring) {ring.style.left = ringX + 'px';ring.style.top  = ringY + 'px';} /* center 36px ring */
             requestAnimationFrame(animateRing);
         };
         window.addEventListener('mousemove', function(e) {
@@ -78,7 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('mousedown', function() { if (cursor) cursor.classList.add('cursor--clicking'); });
         window.addEventListener('mouseup',   function() { if (cursor) cursor.classList.remove('cursor--clicking'); });
 
-        document.querySelectorAll('a, button, [role="button"], details summary').forEach(function(el) {
+        document.querySelectorAll(
+            'a, button, [role="button"], details summary, input, textarea, select, label'
+        ).forEach(function(el) {
             el.addEventListener('mouseenter', function() { if (cursor) cursor.classList.add('cursor--hovering'); });
             el.addEventListener('mouseleave', function() { if (cursor) cursor.classList.remove('cursor--hovering'); });
         });

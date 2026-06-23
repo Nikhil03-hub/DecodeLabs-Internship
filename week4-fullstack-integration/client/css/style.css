@@ -142,6 +142,9 @@
     padding: 0;
 }
 
+/* Critical: prevent any author display property from overriding [hidden] */
+[hidden] { display: none !important; }
+
 html {
     scroll-behavior: smooth;
     scroll-padding-top: calc(var(--nav-height) + 1rem);
@@ -1987,7 +1990,8 @@ strong { font-weight: 600; }
    22. CUSTOM CURSOR — Desktop only
    ========================================================= */
 @media (hover: hover) and (pointer: fine) {
-    html, body, a, button, [role="button"], label, select, summary {
+    html, body, a, button, [role="button"], label, select, summary,
+    input, textarea {
         cursor: none !important;
     }
 
@@ -2000,18 +2004,22 @@ strong { font-weight: 600; }
         will-change: transform;
     }
 
+    /* Inner dot — white with glow so it's always visible on dark backgrounds */
     .cursor__dot {
         position: absolute;
         top: 0;
         left: 0;
-        width: 8px;
-        height: 8px;
+        width: 7px;
+        height: 7px;
         border-radius: 50%;
-        background: var(--color-mocha);
-        transform: translate(-50%, -50%);
-        transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
+        background: #ffffff;
+        box-shadow: 0 0 4px rgba(255, 255, 255, 0.45), 0 0 12px rgba(255, 255, 255, 0.3);
+        transform: translate(-3.5px, -3.5px); /* center 8px dot */
+        transition: width 0.15s ease, height 0.15s ease,
+                    background 0.15s ease, box-shadow 0.15s ease;
     }
 
+    /* Outer ring — glass morphism, always slightly visible */
     .cursor__ring {
         position: absolute;
         top: 0;
@@ -2019,24 +2027,79 @@ strong { font-weight: 600; }
         width: 34px;
         height: 34px;
         border-radius: 50%;
-        border: 1.5px solid rgba(165, 133, 111, 0.28);
-        transform: translate(-17px, -17px);
-        transition: width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                    height 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                    border-color 0.3s ease;
+        border: 1.5px solid rgba(255, 255, 255, 0.35);
+        background: rgba(160, 212, 224, 0.2);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        box-shadow:0 0 8px rgba(255,255,255,.08);
+        transform: translate(-50%, -50%); /* center 36px ring */
+        transition: width 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                    height 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                    border-color 0.25s ease,
+                    background 0.25s ease,
+                    backdrop-filter 0.25s ease;
     }
 
+    /* Hover — blue-tinted glass ring (ChatGPT suggestion) */
     .cursor--hovering .cursor__dot {
-        width: 8px;
-        height: 8px;
+        width: 6px;
+        height: 6px;
         background: var(--color-blue);
+        box-shadow: 0 0 8px rgba(160, 212, 224, 0.9), 0 0 16px rgba(160, 212, 224, 0.4);
     }
 
     .cursor--hovering .cursor__ring {
-        width: 42px;
-        height: 42px;
-        border-color: var(--color-mocha);
-        border-width: 2px;
+        width: 44px;
+        height: 44px;
+
+        border-color: rgba(160,212,224,.55);
+
+        background: rgba(160,212,224,.06);
+
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+
+        box-shadow:
+            0 0 14px rgba(160,212,224,.18);
+    }
+    /* Press — dot and ring contract for click feedback */
+    .cursor--clicking .cursor__dot {
+        width: 5px;
+        height: 5px;
+        background: var(--color-mocha-light);
+        box-shadow: 0 0 8px rgba(165, 133, 111, 0.9);
+    }
+    .cursor--clicking .cursor__ring {
+        width: 24px;
+        height: 24px;
+        border-color: rgba(165, 133, 111, 0.6);
+        background: rgba(165, 133, 111, 0.10);
+    }
+
+    /* ── Light mode overrides — dark cursor on cream background ── */
+    [data-theme="light"] .cursor__dot {
+        background: #1c1008;                              /* near-black warm dot */
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
+    }
+    [data-theme="light"] .cursor__ring {
+        border-color: rgba(20, 16, 8, 0.30);
+        background: rgba(165, 133, 111, 0.08);            /* warm mocha tint */
+    }
+    [data-theme="light"] .cursor--hovering .cursor__dot {
+        background: var(--color-mocha-dark);
+        box-shadow: 0 0 8px rgba(138, 109, 89, 0.7);
+    }
+    [data-theme="light"] .cursor--hovering .cursor__ring {
+        border-color: rgba(165, 133, 111, 0.50);
+        background: rgba(165, 133, 111, 0.10);
+    }
+    [data-theme="light"] .cursor--clicking .cursor__dot {
+        background: var(--color-mocha);
+        box-shadow: 0 0 8px rgba(165, 133, 111, 0.8);
+    }
+    [data-theme="light"] .cursor--clicking .cursor__ring {
+        border-color: rgba(165, 133, 111, 0.55);
+        background: rgba(165, 133, 111, 0.12);
     }
 }
 
@@ -2065,6 +2128,13 @@ strong { font-weight: 600; }
 
 .hero.glow-active::after {
     opacity: 1;
+}
+[data-theme="light"] .hero::after {
+    background: radial-gradient(
+        700px circle at var(--mouse-x) var(--mouse-y),
+        rgba(165,133,111,.11),
+        transparent 55%
+    );
 }
 
 /* Float animation — applied to inner wrapper so scroll-reveal on outer still works */

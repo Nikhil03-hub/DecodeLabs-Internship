@@ -23,6 +23,12 @@
 
 <body class="admin-page">
 
+    <!-- ── Custom cursor (same system as landing page) ───────────── -->
+    <div class="cursor" id="cursor" aria-hidden="true">
+        <div class="cursor__dot"></div>
+        <div class="cursor__ring"></div>
+    </div>
+
     <!-- ── Demo banner ─────────────────────────────────────────────── -->
     <div class="admin-demo-banner">
         <strong>⚠ Demo only</strong> — This admin panel has no authentication.
@@ -54,6 +60,12 @@
                 aria-live="polite"
                 title="Backend server connection status"
             >Checking…</span>
+
+            <!-- Theme toggle — same as landing page, shares nexus-theme localStorage key -->
+            <button class="theme-toggle" id="theme-toggle" aria-label="Switch to light mode" title="Toggle theme">
+                <i data-lucide="sun"  class="icon-sun"  aria-hidden="true"></i>
+                <i data-lucide="moon" class="icon-moon" aria-hidden="true"></i>
+            </button>
 
             <!-- Back to site -->
             <a href="index.html" class="admin-back-link">

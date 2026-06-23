@@ -362,3 +362,73 @@ function formatDate(isoString) {
   const d = new Date(isoString);
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
+
+// ─── Theme toggle (mirrors landing page — shares nexus-theme localStorage key) ─
+(function initTheme() {
+  const htmlEl      = document.documentElement;
+  const themeToggle = document.getElementById('theme-toggle');
+
+  function applyTheme(theme) {
+    htmlEl.setAttribute('data-theme', theme);
+    localStorage.setItem('nexus-theme', theme);
+    if (themeToggle) {
+      themeToggle.setAttribute(
+        'aria-label',
+        theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+      );
+    }
+  }
+
+  // Restore saved preference (same key as landing page — stays in sync)
+  applyTheme(localStorage.getItem('nexus-theme') || 'dark');
+
+  themeToggle?.addEventListener('click', function () {
+    applyTheme(htmlEl.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  // Follow OS preference if user hasn't picked one yet
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+    if (!localStorage.getItem('nexus-theme')) applyTheme(e.matches ? 'dark' : 'light');
+  });
+})();
+
+// ─── Custom cursor (mirrors landing page — same LERP + top/left approach) ────
+(function initCursor() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const cursor = document.getElementById('cursor');
+  if (!cursor) return;
+
+  const dot  = cursor.querySelector('.cursor__dot');
+  const ring = cursor.querySelector('.cursor__ring');
+
+  let mouseX = -100, mouseY = -100, ringX = -100, ringY = -100;
+  const LERP = 0.42;  // matches your landing-page setting
+
+  // Dot tracks instantly
+  window.addEventListener('mousemove', function(e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (dot) dot.style.transform = 'translate(' + (mouseX - 4) + 'px, ' + (mouseY - 4) + 'px)';
+  }, { passive: true });
+
+  // Ring follows with lag via top/left (matches your landing-page approach)
+  (function animateRing() {
+    ringX += (mouseX - ringX) * LERP;
+    ringY += (mouseY - ringY) * LERP;
+    if (ring) { ring.style.left = ringX + 'px'; ring.style.top = ringY + 'px'; }
+    requestAnimationFrame(animateRing);
+  })();
+
+  // Click states
+  window.addEventListener('mousedown', function() { cursor.classList.add('cursor--clicking'); });
+  window.addEventListener('mouseup',   function() { cursor.classList.remove('cursor--clicking'); });
+
+  // Hover expand on all interactive elements (including table rows, badges, action buttons)
+  document.querySelectorAll(
+    'a, button, [role="button"], input, select, textarea, label, .leads-row, .stat-card'
+  ).forEach(function(el) {
+    el.addEventListener('mouseenter', function() { cursor.classList.add('cursor--hovering'); });
+    el.addEventListener('mouseleave', function() { cursor.classList.remove('cursor--hovering'); });
+  });
+})();

@@ -657,3 +657,89 @@
     .toast-container { right: 0.75rem; bottom: 0.75rem; }
     .toast { max-width: calc(100vw - 1.5rem); }
 }
+
+
+/* =========================================================
+   17. LIGHT MODE OVERRIDES
+   Admin was designed dark-first. These rules flip every
+   hardcoded dark value to a legible light-mode equivalent,
+   while re-using the CSS token switches from style.css.
+   ========================================================= */
+
+/* ── Header ─────────────────────────────────────────────── */
+[data-theme="light"] .admin-header {
+    background: rgba(250, 247, 243, 0.96); /* warm off-white, matches light page bg */
+    border-bottom-color: rgba(165, 133, 111, 0.18);
+}
+
+/* ── Server status pills ─────────────────────────────────── */
+[data-theme="light"] .server-status--ok {
+    background: rgba(22, 163, 74, 0.10);
+    color: #15803d;           /* WCAG-AA dark green on white */
+    border-color: rgba(22, 163, 74, 0.30);
+}
+[data-theme="light"] .server-status--ok::before {
+    background: #16a34a;
+    box-shadow: 0 0 6px rgba(22, 163, 74, 0.50);
+}
+[data-theme="light"] .server-status--error {
+    background: rgba(220, 38, 38, 0.08);
+    color: #b91c1c;           /* dark red — readable on cream */
+    border-color: rgba(220, 38, 38, 0.25);
+}
+[data-theme="light"] .server-status--error::before { background: #dc2626; }
+
+/* ── Status badges ───────────────────────────────────────── */
+/* Neon colours on white have terrible contrast — switch to
+   darker, saturated equivalents that still keep the hue. */
+[data-theme="light"] .status-badge--new {
+    background: rgba(160, 212, 224, 0.18);
+    color: #0e6b7c;           /* dark teal */
+    border-color: rgba(160, 212, 224, 0.45);
+}
+[data-theme="light"] .status-badge--contacted {
+    background: rgba(245, 158, 11, 0.12);
+    color: #92400e;           /* dark amber */
+    border-color: rgba(245, 158, 11, 0.35);
+}
+[data-theme="light"] .status-badge--converted {
+    background: rgba(74, 222, 128, 0.12);
+    color: #166534;           /* dark green */
+    border-color: rgba(74, 222, 128, 0.35);
+}
+[data-theme="light"] .status-badge--rejected {
+    background: rgba(248, 113, 113, 0.12);
+    color: #991b1b;           /* dark red */
+    border-color: rgba(248, 113, 113, 0.35);
+}
+
+/* ── Action buttons ──────────────────────────────────────── */
+[data-theme="light"] .action-btn--contact {
+    color: #0e6b7c;
+    border-color: rgba(160, 212, 224, 0.55);
+}
+[data-theme="light"] .action-btn--contact:hover:not(:disabled) {
+    background: rgba(160, 212, 224, 0.14);
+    border-color: #0e6b7c;
+}
+[data-theme="light"] .action-btn--delete {
+    color: #b91c1c;
+    border-color: rgba(248, 113, 113, 0.40);
+}
+[data-theme="light"] .action-btn--delete:hover:not(:disabled) {
+    background: rgba(248, 113, 113, 0.08);
+    border-color: #b91c1c;
+}
+
+/* ── Table ───────────────────────────────────────────────── */
+[data-theme="light"] .leads-table thead th {
+    background: rgba(165, 133, 111, 0.07);
+}
+[data-theme="light"] .leads-table tbody tr:hover {
+    background: rgba(165, 133, 111, 0.06);
+}
+
+/* ── Toast ───────────────────────────────────────────────── */
+[data-theme="light"] .toast {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
