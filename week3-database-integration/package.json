@@ -1,0 +1,16 @@
+{
+  "name": "nexus-leads-api-w3",
+  "version": "1.0.0",
+  "description": "Week 3 — MongoDB + Mongoose REST API for Nexus AI waitlist leads",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "mongoose": "^8.4.1",
+    "dotenv": "^16.4.5"
+  }
+}
