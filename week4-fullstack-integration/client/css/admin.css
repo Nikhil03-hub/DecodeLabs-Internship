@@ -1,0 +1,659 @@
+/* =========================================================
+   NEXUS AI — Admin Dashboard Styles
+   DecodeLabs Internship — Week 4: Full-Stack Integration
+
+   Companion to style.css (Week 1 base tokens).
+   Admin-specific classes only. Uses the same CSS custom
+   properties defined in style.css :root.
+
+   Sections:
+   01. [hidden] safety override
+   02. Admin page shell & demo banner
+   03. Sticky admin header + server status pill
+   04. Main content area
+   05. Page header row + Refresh button
+   06. Stats cards grid
+   07. Controls row (filter + search)
+   08. Table wrapper + leads table
+   09. Skeleton shimmer loading rows
+   10. Status badges
+   11. Action buttons
+   12. Empty state
+   13. Error state + Retry button
+   14. Toast notification system
+   15. Row animations
+   16. Responsive breakpoints
+   ========================================================= */
+
+
+/* =========================================================
+   01. [hidden] SAFETY OVERRIDE
+   The browser UA stylesheet sets [hidden]{display:none} but
+   it can be overridden by author stylesheets. Force it.
+   ========================================================= */
+[hidden] { display: none !important; }
+
+
+/* =========================================================
+   02. ADMIN PAGE SHELL & DEMO BANNER
+   ========================================================= */
+.admin-page {
+    min-height: 100vh;
+    background-color: var(--color-bg);
+}
+
+.admin-demo-banner {
+    background: rgba(165, 133, 111, 0.08);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    text-align: center;
+    padding: 0.45rem 1rem;
+    line-height: 1.4;
+}
+.admin-demo-banner strong { color: var(--color-mocha); }
+
+
+/* =========================================================
+   03. STICKY ADMIN HEADER
+   ========================================================= */
+.admin-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0 1.5rem;
+    height: 56px;
+    background: rgba(26, 16, 10, 0.95);
+    border-bottom: 1px solid var(--color-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.admin-header__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+.admin-header__logo-text {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-text);
+    white-space: nowrap;
+}
+.admin-header__logo-text span { color: var(--color-mocha); }
+
+.admin-header__divider {
+    color: var(--color-text-faint);
+    font-size: 0.875rem;
+    user-select: none;
+}
+.admin-header__title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+}
+.admin-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-left: auto;
+}
+
+/* Server status pill */
+.server-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.22rem 0.7rem;
+    border-radius: 9999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+.server-status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.server-status--ok {
+    background: rgba(74, 222, 128, 0.12);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.25);
+}
+.server-status--ok::before {
+    background: #4ade80;
+    box-shadow: 0 0 6px rgba(74, 222, 128, 0.6);
+    animation: status-pulse 2s ease-in-out infinite;
+}
+.server-status--error {
+    background: rgba(248, 113, 113, 0.12);
+    color: #f87171;
+    border: 1px solid rgba(248, 113, 113, 0.25);
+}
+.server-status--error::before { background: #f87171; }
+
+@keyframes status-pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+}
+
+.admin-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    padding: 0.3rem 0.65rem;
+    border-radius: var(--radius-sm);
+    transition: color 0.2s ease, background 0.2s ease;
+    white-space: nowrap;
+}
+.admin-back-link:hover {
+    color: var(--color-mocha);
+    background: rgba(165, 133, 111, 0.08);
+}
+
+
+/* =========================================================
+   04. MAIN CONTENT AREA
+   ========================================================= */
+.admin-main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+}
+
+
+/* =========================================================
+   05. PAGE HEADER ROW + REFRESH BUTTON
+   ========================================================= */
+.admin-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+}
+.admin-page-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 3vw, 1.625rem);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.01em;
+}
+.admin-page-sub {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+}
+
+.refresh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1.1rem;
+    background: var(--color-card);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.refresh-btn:hover:not(:disabled) {
+    background: var(--color-card-hover);
+    border-color: var(--color-mocha);
+}
+.refresh-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.refresh-icon { font-style: normal; font-size: 1rem; line-height: 1; }
+
+
+/* =========================================================
+   06. STATS CARDS GRID
+   ========================================================= */
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.stat-card:hover {
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-card);
+}
+/* Coloured top accent bar */
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+}
+.stat-card::before              { background: var(--color-mocha); }
+.stat-card--new::before         { background: var(--color-blue); }
+.stat-card--contact::before     { background: #f59e0b; }
+.stat-card--convert::before     { background: #4ade80; }
+
+.stat-card__label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin-bottom: 0.65rem;
+}
+.stat-card__value {
+    font-family: var(--font-heading);
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1;
+}
+
+
+/* =========================================================
+   07. CONTROLS ROW (filter + search + count)
+   ========================================================= */
+.admin-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.admin-controls__filter,
+.admin-controls__search {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    padding: 0.5rem 0.875rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.admin-controls__filter:focus,
+.admin-controls__search:focus {
+    border-color: var(--color-mocha);
+    box-shadow: 0 0 0 3px rgba(165, 133, 111, 0.12);
+}
+.admin-controls__filter { cursor: pointer; padding-right: 2rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239E8B7F' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.75rem center; }
+.admin-controls__search { flex: 1; min-width: 160px; }
+
+.leads-count-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-left: auto;
+    white-space: nowrap;
+}
+.leads-count-badge {
+    font-weight: 700;
+    color: var(--color-mocha);
+}
+
+
+/* =========================================================
+   08. TABLE WRAPPER + LEADS TABLE
+   ========================================================= */
+.table-wrapper {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.leads-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+.leads-table thead th {
+    padding: 0.7rem 1rem;
+    text-align: left;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    background: rgba(165, 133, 111, 0.05);
+    border-bottom: 1px solid var(--color-border);
+    white-space: nowrap;
+}
+
+/* Column widths */
+.col-name    { width: 28%; }
+.col-company { width: 22%; }
+.col-status  { width: 14%; }
+.col-date    { width: 18%; }
+.col-actions { width: 18%; }
+
+/* Data rows */
+.leads-table tbody tr {
+    border-bottom: 1px solid rgba(165, 133, 111, 0.07);
+    transition: background 0.15s ease;
+}
+.leads-table tbody tr:last-child { border-bottom: none; }
+.leads-table tbody tr:hover { background: rgba(165, 133, 111, 0.04); }
+
+.leads-table tbody td,
+.td {
+    padding: 0.9rem 1rem;
+    vertical-align: top;
+}
+
+/* Name / email cell */
+.td--name .lead-name {
+    display: block;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--color-text);
+    margin-bottom: 0.15rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.td--name .lead-email {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Company / team size cell */
+.td--company .company-name {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--color-text);
+    margin-bottom: 0.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.td--company .team-size {
+    display: block;
+    font-size: 0.68rem;
+    color: var(--color-text-faint);
+}
+
+/* Date cell */
+.td--date {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+}
+
+/* Actions cell */
+.td--actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding-top: 0.75rem;
+}
+
+
+/* =========================================================
+   09. SKELETON SHIMMER ROWS
+   ========================================================= */
+.skeleton-row td { padding: 0.9rem 1rem; }
+
+.skeleton-cell {
+    border-radius: var(--radius-sm);
+    background: linear-gradient(
+        90deg,
+        rgba(165, 133, 111, 0.07) 25%,
+        rgba(165, 133, 111, 0.14) 50%,
+        rgba(165, 133, 111, 0.07) 75%
+    );
+    background-size: 200% 100%;
+    animation: admin-shimmer 1.5s ease-in-out infinite;
+    height: 13px;
+}
+.skeleton-cell--lg { width: 80%; }
+.skeleton-cell--md { width: 60%; }
+.skeleton-cell--sm { width: 45%; }
+.skeleton-cell--xs { width: 30%; }
+
+@keyframes admin-shimmer {
+    0%   { background-position:  200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+
+/* =========================================================
+   10. STATUS BADGES
+   ========================================================= */
+.status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.55rem;
+    border-radius: 9999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    border: 1px solid transparent;
+}
+.status-badge--new       { background: rgba(160,212,224,0.15); color: var(--color-blue-light);  border-color: rgba(160,212,224,0.25); }
+.status-badge--contacted { background: rgba(245,158,11,0.15);  color: #fbbf24;                  border-color: rgba(245,158,11,0.25); }
+.status-badge--converted { background: rgba(74,222,128,0.15);  color: #4ade80;                  border-color: rgba(74,222,128,0.25); }
+.status-badge--rejected  { background: rgba(248,113,113,0.15); color: #f87171;                  border-color: rgba(248,113,113,0.25); }
+
+
+/* =========================================================
+   11. ACTION BUTTONS
+   ========================================================= */
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.28rem 0.65rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 700;
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    line-height: 1;
+}
+.action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.action-btn--contact { color: var(--color-blue); border-color: rgba(160,212,224,0.35); }
+.action-btn--contact:hover:not(:disabled) { background: rgba(160,212,224,0.1); border-color: var(--color-blue); }
+
+.action-btn--delete  { color: #f87171; border-color: rgba(248,113,113,0.35); font-size: 0.8rem; }
+.action-btn--delete:hover:not(:disabled)  { background: rgba(248,113,113,0.1); border-color: #f87171; }
+
+
+/* =========================================================
+   12. EMPTY STATE
+   ========================================================= */
+.empty-state {
+    padding: 4rem 2rem;
+    text-align: center;
+}
+.empty-state__icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+.empty-state__title {
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 0.4rem;
+}
+.empty-state__sub {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    max-width: 300px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   13. ERROR STATE + RETRY BUTTON
+   ========================================================= */
+.error-state {
+    padding: 4rem 2rem;
+    text-align: center;
+}
+.error-state__icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+.error-state__title {
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 0.4rem;
+}
+.error-state__sub {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    max-width: 380px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.65;
+}
+
+.retry-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.4rem;
+    background: var(--color-mocha);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+.retry-btn:hover  { background: var(--color-mocha-dark); }
+.retry-btn:active { transform: scale(0.97); }
+
+
+/* =========================================================
+   14. TOAST NOTIFICATION SYSTEM
+   ========================================================= */
+.toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left-width: 3px;
+    box-shadow: var(--shadow-lg);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    color: var(--color-text);
+    pointer-events: all;
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    max-width: 320px;
+    min-width: 200px;
+}
+.toast--visible { opacity: 1; transform: translateY(0) scale(1); }
+.toast--success { border-left-color: #4ade80; }
+.toast--error   { border-left-color: #f87171; }
+.toast--info    { border-left-color: var(--color-blue); }
+
+.toast__icon { font-size: 0.875rem; flex-shrink: 0; }
+.toast--success .toast__icon { color: #4ade80; }
+.toast--error   .toast__icon { color: #f87171; }
+.toast--info    .toast__icon { color: var(--color-blue); }
+.toast__msg { flex: 1; line-height: 1.4; }
+
+
+/* =========================================================
+   15. ROW ANIMATIONS
+   ========================================================= */
+.row--deleting {
+    opacity: 0 !important;
+    transform: translateX(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease !important;
+}
+
+
+/* =========================================================
+   16. RESPONSIVE BREAKPOINTS
+   ========================================================= */
+@media (max-width: 900px) {
+    .admin-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .admin-header__title   { display: none; }
+    .admin-header__divider { display: none; }
+    /* Hide less-critical columns on mobile */
+    .col-company, .td--company { display: none; }
+    .col-date,    .td--date    { display: none; }
+    .col-name    { width: 42%; }
+    .col-status  { width: 28%; }
+    .col-actions { width: 30%; }
+}
+
+@media (max-width: 480px) {
+    .admin-main  { padding: 1rem 0.75rem 2rem; }
+    .admin-stats { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+    .stat-card   { padding: 1rem; }
+    .stat-card__value { font-size: 1.75rem; }
+    .toast-container { right: 0.75rem; bottom: 0.75rem; }
+    .toast { max-width: calc(100vw - 1.5rem); }
+}

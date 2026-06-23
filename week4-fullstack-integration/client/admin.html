@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nexus AI — Leads Admin Dashboard (Demo)">
+    <meta name="robots" content="noindex">
+    <title>Nexus AI — Leads Admin</title>
+
+    <!-- Same font stack as Week 1 for consistency -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Lucide icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- Week 1 base tokens + shared styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Week 4 admin-specific styles (stat cards, table, badges, toasts, etc.) -->
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body class="admin-page">
+
+    <!-- ── Demo banner ─────────────────────────────────────────────── -->
+    <div class="admin-demo-banner">
+        <strong>⚠ Demo only</strong> — This admin panel has no authentication.
+        In production, protect this route with a login gate. Week 4 scope is integration, not auth.
+    </div>
+
+    <!-- ── Sticky admin header ─────────────────────────────────────── -->
+    <header class="admin-header" role="banner">
+        <!-- Brand -->
+        <a href="index.html" class="admin-header__brand" aria-label="Nexus AI — Go to landing page">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                <path d="M16 2L30 9V23L16 30L2 23V9L16 2Z" fill="var(--color-mocha)" opacity="0.9"/>
+                <path d="M16 9L23 12.5V19.5L16 23L9 19.5V12.5L16 9Z" fill="var(--color-blue)" opacity="0.85"/>
+                <circle cx="16" cy="16" r="3" fill="var(--color-bg)"/>
+            </svg>
+            <span class="admin-header__logo-text">Nexus <span>AI</span></span>
+        </a>
+
+        <span class="admin-header__divider" aria-hidden="true">/</span>
+        <span class="admin-header__title">Leads Console</span>
+
+        <!-- Right actions -->
+        <div class="admin-header__actions">
+            <!-- Server status pill -->
+            <span
+                class="server-status server-status--error"
+                id="server-status"
+                role="status"
+                aria-live="polite"
+                title="Backend server connection status"
+            >Checking…</span>
+
+            <!-- Back to site -->
+            <a href="index.html" class="admin-back-link">
+                <i data-lucide="arrow-left" aria-hidden="true" style="width:14px;height:14px;"></i>
+                Back to site
+            </a>
+        </div>
+    </header>
+
+    <!-- ── Main content ────────────────────────────────────────────── -->
+    <main class="admin-main" id="main-content">
+
+        <!-- Page title row -->
+        <div class="admin-page-header">
+            <div>
+                <h1 class="admin-page-title">Waitlist Leads</h1>
+                <p class="admin-page-sub">Early-access signups from the Nexus AI landing page</p>
+            </div>
+            <button class="refresh-btn" id="refresh-btn" aria-label="Refresh leads list">
+                <i class="refresh-icon" aria-hidden="true">↺</i>
+                <span class="btn-text">Refresh</span>
+            </button>
+        </div>
+
+        <!-- Stats cards -->
+        <div class="admin-stats" role="region" aria-label="Lead statistics">
+            <div class="stat-card">
+                <p class="stat-card__label">Total Leads</p>
+                <p class="stat-card__value" id="stat-total" aria-live="polite">—</p>
+            </div>
+            <div class="stat-card stat-card--new">
+                <p class="stat-card__label">New</p>
+                <p class="stat-card__value" id="stat-new" aria-live="polite">—</p>
+            </div>
+            <div class="stat-card stat-card--contact">
+                <p class="stat-card__label">Contacted</p>
+                <p class="stat-card__value" id="stat-contacted" aria-live="polite">—</p>
+            </div>
+            <div class="stat-card stat-card--convert">
+                <p class="stat-card__label">Converted</p>
+                <p class="stat-card__value" id="stat-converted" aria-live="polite">—</p>
+            </div>
+        </div>
+
+        <!-- Controls: filter + search -->
+        <div class="admin-controls" role="search">
+            <label for="status-filter" class="visually-hidden">Filter by status</label>
+            <select class="admin-controls__filter" id="status-filter" aria-label="Filter leads by status">
+                <option value="">All Statuses</option>
+                <option value="new">New</option>
+                <option value="contacted">Contacted</option>
+                <option value="converted">Converted</option>
+                <option value="rejected">Rejected</option>
+            </select>
+
+            <label for="search-input" class="visually-hidden">Search leads</label>
+            <input
+                class="admin-controls__search"
+                id="search-input"
+                type="search"
+                placeholder="Search name, email or company…"
+                aria-label="Search leads by name, email, or company"
+            >
+
+            <span class="leads-count-label">
+                <span class="leads-count-badge" id="leads-count">—</span> leads
+            </span>
+        </div>
+
+        <!-- Table wrapper — contains all four UI states -->
+        <div class="table-wrapper" role="region" aria-label="Leads table" aria-live="polite">
+
+            <!-- STATE 1: Loading (skeleton rows) -->
+            <table class="leads-table" id="skeleton-rows" aria-label="Loading leads…" aria-hidden="false">
+                <thead>
+                    <tr>
+                        <th class="col-name">Name / Email</th>
+                        <th class="col-company">Company</th>
+                        <th class="col-status">Status</th>
+                        <th class="col-date">Joined</th>
+                        <th class="col-actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 5 skeleton rows — animated shimmer placeholders -->
+                    <tr class="skeleton-row" aria-hidden="true">
+                        <td><div class="skeleton-cell skeleton-cell--lg"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--md"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--xs"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--sm"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--xs"></div></td>
+                    </tr>
+                    <tr class="skeleton-row" aria-hidden="true">
+                        <td><div class="skeleton-cell skeleton-cell--md"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--lg"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--xs"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--sm"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--xs"></div></td>
+                    </tr>
+                    <tr class="skeleton-row" aria-hidden="true">
+                        <td><div class="skeleton-cell skeleton-cell--sm"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--md"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--xs"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--sm"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--xs"></div></td>
+                    </tr>
+                    <tr class="skeleton-row" aria-hidden="true">
+                        <td><div class="skeleton-cell skeleton-cell--lg"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--sm"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--xs"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--sm"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--xs"></div></td>
+                    </tr>
+                    <tr class="skeleton-row" aria-hidden="true">
+                        <td><div class="skeleton-cell skeleton-cell--md"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--xs"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--xs"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--sm"></div></td>
+                        <td><div class="skeleton-cell skeleton-cell--xs"></div></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- STATE 2: Success (real data rows) -->
+            <table class="leads-table" id="leads-table" hidden>
+                <thead>
+                    <tr>
+                        <th class="col-name">Name / Email</th>
+                        <th class="col-company">Company</th>
+                        <th class="col-status">Status</th>
+                        <th class="col-date">Joined</th>
+                        <th class="col-actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="leads-tbody">
+                    <!-- Rows injected by admin.js using createElement + textContent (XSS-safe) -->
+                </tbody>
+            </table>
+
+            <!-- STATE 3: Empty -->
+            <div class="empty-state" id="empty-state" hidden role="status">
+                <span class="empty-state__icon" aria-hidden="true">📭</span>
+                <p class="empty-state__title">No leads yet</p>
+                <p class="empty-state__sub">
+                    Submit the waitlist form on the landing page to see leads appear here.
+                </p>
+            </div>
+
+            <!-- STATE 4: Error -->
+            <div class="error-state" id="error-state" hidden role="alert">
+                <span class="error-state__icon" aria-hidden="true">⚠️</span>
+                <p class="error-state__title">Couldn't load leads</p>
+                <p class="error-state__sub" id="error-msg">
+                    Unable to reach the backend. Make sure the server is running on
+                    <code style="color:var(--color-blue)">http://localhost:3000</code>
+                </p>
+                <button class="retry-btn" id="retry-btn">Try Again</button>
+            </div>
+
+        </div><!-- /.table-wrapper -->
+
+    </main>
+
+    <!-- Toast container (bottom-right, managed by admin.js) -->
+    <div
+        class="toast-container"
+        id="toast-container"
+        aria-live="assertive"
+        aria-atomic="true"
+        role="region"
+        aria-label="Notifications"
+    ></div>
+
+    <!-- admin.js — ES module (requires Live Server, not file://) -->
+    <script type="module" src="js/admin.js"></script>
+    <!-- Lucide icon init -->
+    <script>lucide.createIcons();</script>
+
+    <style>
+        /* Visually hidden utility for screen-reader-only labels */
+        .visually-hidden {
+            position: absolute; width: 1px; height: 1px;
+            padding: 0; margin: -1px; overflow: hidden;
+            clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+        }
+    </style>
+
+</body>
+</html>
